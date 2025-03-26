@@ -22,14 +22,14 @@ const AuthPage = () => {
   return (
     <div className="flex justify-center items-center gap-10 h-screen w-screen overflow-hidden bg-gradient-to-br from-blue-900 via-black to-yellow-900">
       
-      {/* Sign Up Card */}
+      {/* Sign Up Card (Now on the LEFT side) */}
       <motion.div
         initial={{ x: -400, y: -50, opacity: 1 }}
-        animate={isSignIn ? { x: 400, y: 50, opacity: 0.5, scale: 0.8 } : { x: 0, opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, type: "spring" }}
+        animate={!isSignIn ? { x: 0, opacity: 1, scale: 1 } : { x: -400, y: 50, opacity: 0.5, scale: 0.7 }}
+        transition={{ duration: 0.8, type: "spring" }}
         className={`absolute h-3/5 w-1/4 bg-gray-800 rounded-xl shadow-lg p-6 text-white flex flex-col items-center justify-center mt-16 
         ${isSignIn ? "pointer-events-none" : "pointer-events-auto"}`}
-      >
+      > 
         <h2 className="text-3xl font-bold mb-4 text-purple-400 font-mono">Sign Up</h2>
         <input 
           type="text" 
@@ -69,10 +69,10 @@ const AuthPage = () => {
         </p>
       </motion.div>
 
-      {/* Sign In Card */}
+      {/* Sign In Card (Now in the CENTER) */}
       <motion.div
         initial={{ x: 400, y: -50, opacity: 1 }}
-        animate={!isSignIn ? { x: -400, y: 50, opacity: 0.5, scale: 0.8 } : { x: 0, opacity: 1, scale: 1 }}
+        animate={isSignIn ? { x: 0, opacity: 1, scale: 1 } : { x: 400, y: 50, opacity: 0.5, scale: 0.7 }}
         transition={{ duration: 0.5, type: "spring" }}
         className={`absolute h-3/5 w-1/4 bg-gray-800 rounded-xl shadow-lg p-6 text-white flex flex-col items-center justify-center mt-16 
         ${!isSignIn ? "pointer-events-none" : "pointer-events-auto"}`}
