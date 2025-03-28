@@ -2,7 +2,7 @@ import Cards from "./Cards"
 
 const MainSection = () => {
   return (
-    <div className="mt-28">
+    <div className="mt-24">
         <Cards/>
     </div>
   )

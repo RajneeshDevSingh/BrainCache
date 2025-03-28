@@ -17,17 +17,17 @@ const App = () => {
       <div className="relative text-white z-10 flex flex-col h-screen">
         {/* Fixed Navbar */}
 
-        <AuthPage/>
-        {/* <div className="text-xl bg-gray-800 fixed top-0 w-full">
+        {/* <AuthPage/> */}
+        <div className="text-xl fixed top-0 w-full">
           <Navbar />
         </div>
 
         <div className="flex flex-grow">
-          <div className="p-4 w-1/5 bg-pink-500 h-screen fixed left-0 top-[76px]">
+          <div className="p-4 w-1/5 h-screen fixed left-0 top-20">
             <Sidebar />
           </div>
 
-          <div className="w-4/5 bg-pink-900 ml-[20%] overflow-y-auto h-screen p-4
+          <div className="w-4/5 ml-[20%] overflow-y-auto h-screen p-4
                 [&::-webkit-scrollbar]:w-2 
                 [&::-webkit-scrollbar-track]:bg-gray-800 
                 [&::-webkit-scrollbar-thumb]:bg-gray-500 
@@ -35,7 +35,7 @@ const App = () => {
                 hover:[&::-webkit-scrollbar-thumb]:bg-gray-400">
             <MainSection />
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );

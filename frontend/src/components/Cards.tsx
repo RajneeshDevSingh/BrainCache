@@ -4,9 +4,9 @@ import { FaTrash } from "react-icons/fa";
 
 const Cards = () => {
   return (
-    <div className="flex flex-wrap mx-auto gap-3">
+    <div className="flex flex-wrap mx-auto ">
       {[...Array(20)].map((_, index) => (
-        <div key={index} className="h-96 w-72 bg-red-400 rounded-2xl border border-slate-500 p-4">
+        <div key={index} className="h-96 w-72 rounded-2xl border-2 border-slate-500 p-4 mx-auto my-4">
           <div className="flex p-4 justify-between font-semibold items-center text-xl cursor-pointer">
             <LuFileSliders />
             <h2 className="cursor-default">Project Ideas {index + 1}</h2>
