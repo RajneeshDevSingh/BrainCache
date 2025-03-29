@@ -10,28 +10,28 @@ import { LuBrain } from "react-icons/lu";
 const Navbar = () => {
   return (
     <div className="flex justify-between items-center my-4 mx-10">
-      <div className="text-3xl font-bold flex items-center gap-x-4">
+      <div className="font-bold flex items-center gap-x-4">
         <SidebarItems icon={<LuBrain />} title="Second Brain" noAnimation/>
       </div>
 
       <div className="flex justify-center gap-2 ">
         <Button
           variant="primary"
-          size="md"
+          size="sm"
           text="Share Brain"
           startIcon={<RiShareFill />}
           fullWidth={true}
         />
         <Button
           variant="secondary"
-          size="lg"
-          text="Add Content"
+          size="sm"
+          text="Content"
           startIcon={<FaPlus />}
           fullWidth={true}/>
       </div>
 
       <div>
-          <span className="text-4xl text-white ">
+          <span className="text-2xl text-white ">
             <FaRegUser />
           </span>
       </div>
