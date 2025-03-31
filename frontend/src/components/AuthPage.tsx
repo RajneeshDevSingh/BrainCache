@@ -1,11 +1,18 @@
+
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { z } from "zod";
-import SidebarItems from "./ui/SidebarItems";
 import { LuBrain } from "react-icons/lu";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+
+
 
 // Define Zod Validation Schema
 const signUpSchema = z.object({
@@ -29,10 +36,11 @@ const signInSchema = z.object({
     .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
 });
 
-const AuthPage = () => {
+const AuthPage = ({ toggleAuthState }: { toggleAuthState: (authState: boolean) => void }) => {
   const [isSignIn, setIsSignIn] = useState(true);
   const [showSignUpPassword, setShowSignUpPassword] = useState(false);
   const [showSignInPassword, setShowSignInPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleSwitch = (toSignIn: boolean) => {
     setIsSignIn(toSignIn);
@@ -76,13 +84,62 @@ const AuthPage = () => {
   });
 
   // Handle Form Submission
-  const onSignUpSubmit = (data: SignUpFormData) => {
-    console.log("Sign Up Data:", data);
-  };
+const onSignUpSubmit = async (data: SignUpFormData) => {
+  try {
+    const response = await axios.post("http://localhost:3000/api/v1/signup", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  const onSignInSubmit = (data: SignInFormData) => {
-    console.log("Sign In Data:", data);
-  };
+    if (response.status === 200) {
+      toast.success("Signup Successful!");
+      toggleAuthState(true);
+      navigate("/AllContent")
+    } else {
+      toast.error(response.data.message || "Signup failed.");
+    }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      toast.error(error.response?.data?.message || "Server error");
+    } else if (error instanceof Error) {
+      toast.error("An error occurred: " + error.message);
+    } else {
+      toast.error("An unexpected error occurred.");
+    }
+  }
+  
+};
+
+ 
+const onSignInSubmit = async (data: SignInFormData) => {
+  try {
+    const response = await axios.post("http://localhost:3000/api/v1/signIn", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      toast.success("SignIn Successful!");
+        const JWT = response.data.token;
+        localStorage.setItem("token", JWT);
+        toggleAuthState(true);
+        navigate("/AllContent")
+    } else {
+      toast.error(`SignIn Failed: ${response.data.message}`);
+    }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      toast.error(error.response?.data?.message || "Server error");
+    } else if (error instanceof Error) {
+      toast.error("An error occurred: " + error.message);
+    } else {
+      toast.error("An unexpected error occurred");
+    }
+  }
+};
+
 
   return (
     <div className="flex justify-center items-center gap-10 h-screen w-screen overflow-hidden">
@@ -146,8 +203,8 @@ const AuthPage = () => {
 
       {/* Sign In Card */}
       <motion.div
-        initial={{ x: 400, y: -50, opacity: 1 }}
-        animate={isSignIn ? { x: 0, opacity: 1, scale: 1 } : { x: 400, y: 50, opacity: 0.5, scale: 0.7 }}
+        initial={{ x: 400, y: -50, opacity: 1 , gap:5}}
+        animate={isSignIn ? { x: 0, opacity: 1, scale: 1 } : { x: 400, y: 70, opacity: 0.5, scale: 0.7 }}
         transition={{ duration: 0.5, type: "spring" }}
         className={`absolute h-3/5 w-1/4 bg-gray-800 rounded-xl shadow-lg p-6 text-white flex flex-col items-center justify-center mt-16 
         ${!isSignIn ? "pointer-events-none" : "pointer-events-auto"}`}
@@ -177,7 +234,7 @@ const AuthPage = () => {
               {showSignInPassword ? <EyeIcon className="w-5 h-5" /> : <EyeSlashIcon className="w-5 h-5" />}
             </button>
           </div>
-          {signInErrors.password && <p className="text-red-500 text-sm pb-3 ml-3 -mt-2">{signInErrors.password.message}</p>}
+          {signInErrors.password && <p className="text-red-500 text-sm pb-2 ml-3 -mt-2">{signInErrors.password.message}</p>}
 
           <button type="submit" className="w-full p-3 rounded bg-blue-600 text-white font-semibold hover:bg-blue-500 font-mono">
             Login
@@ -194,3 +251,4 @@ const AuthPage = () => {
 };
 
 export default AuthPage;
+

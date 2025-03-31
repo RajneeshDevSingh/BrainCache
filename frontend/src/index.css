@@ -3,3 +3,31 @@
 @tailwind utilities;
 
 /* Ensure body has a transparent background */
+
+.Toastify__toast-container {
+    z-index: 9999 !important;
+  }
+  .Toastify__toast {
+    z-index: 9999 !important;
+  }
+
+
+  .content-container {
+    @apply w-4/5 ml-[20%] overflow-y-auto h-screen p-4;
+  }
+  
+  .content-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .content-container::-webkit-scrollbar-track {
+    @apply bg-gray-800;
+  }
+  
+  .content-container::-webkit-scrollbar-thumb {
+    @apply bg-gray-500 rounded-full transition-colors;
+  }
+  
+  .content-container:hover::-webkit-scrollbar-thumb {
+    @apply bg-gray-400;
+  }
