@@ -25,12 +25,10 @@ const Navbar = () => {
   }, []);
 
   const handleLogOut = () => {
-    localStorage.removeItem("isAuthDone"); 
+    localStorage.removeItem("token"); 
     setIsOpen(false);
     navigate("/auth", { replace: true }); 
-    setTimeout(() => {
-      window.location.href = "/auth"; 
-    }, 100);
+
   };
 
   return (

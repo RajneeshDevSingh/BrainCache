@@ -36,7 +36,7 @@ const signInSchema = z.object({
     .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
 });
 
-const AuthPage = ({ toggleAuthState }: { toggleAuthState: (authState: boolean) => void }) => {
+const AuthPage = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const [showSignUpPassword, setShowSignUpPassword] = useState(false);
   const [showSignInPassword, setShowSignInPassword] = useState(false);
@@ -94,8 +94,10 @@ const onSignUpSubmit = async (data: SignUpFormData) => {
 
     if (response.status === 200) {
       toast.success("Signup Successful!");
-      toggleAuthState(true);
-      navigate("/AllContent")
+      setTimeout(()=>
+        {
+          navigate("/AllContent")
+        },2000)
     } else {
       toast.error(response.data.message || "Signup failed.");
     }
@@ -124,8 +126,11 @@ const onSignInSubmit = async (data: SignInFormData) => {
       toast.success("SignIn Successful!");
         const JWT = response.data.token;
         localStorage.setItem("token", JWT);
-        toggleAuthState(true);
-        navigate("/AllContent")
+        setTimeout(()=>
+        {
+          navigate("/AllContent")
+        },2000)
+        
     } else {
       toast.error(`SignIn Failed: ${response.data.message}`);
     }
