@@ -8,8 +8,9 @@ import { LuBrain } from "react-icons/lu";
 import Button from "./ui/Button";
 import SidebarItems from "./ui/SidebarItems";
 
-const Navbar = () => {
+const Navbar = ({ toggleCreateBox }: { toggleCreateBox: () => void }) => {
   const [isOpen, setIsOpen] = useState(false);
+  
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -31,6 +32,7 @@ const Navbar = () => {
 
   };
 
+
   return (
     <div className="flex justify-between items-center my-4 mx-10 relative">
       <div className="font-bold flex items-center gap-x-4">
@@ -41,11 +43,11 @@ const Navbar = () => {
 
       <div className="flex justify-center gap-2">
         <Button variant="primary" size="sm" text="Share Brain" startIcon={<RiShareFill />} fullWidth={true} />
-        <Button variant="secondary" size="sm" text="Content" startIcon={<FaPlus />} fullWidth={true} />
+        <Button variant="secondary" size="sm" text="Content" startIcon={<FaPlus />} fullWidth={true} onClick={toggleCreateBox} />
       </div>
 
       <div className="relative" ref={dropdownRef}>
-        <button className="text-2xl text-white p-2 rounded-full hover:bg-gray-700" onClick={() => setIsOpen(!isOpen)}>
+        <button className="text-2xl text-white p-2 rounded-full hover:bg-gray-700" onClick={() => setIsOpen(!isOpen)} >
           <FaRegUser />
         </button>
 

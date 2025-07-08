@@ -1,17 +1,17 @@
 import express, { Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt,{JwtPayload} from "jsonwebtoken";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
-import {UserModel } from "./db";
-
+import {ContentModel, UserModel } from "./db";
+import { ValidateUser } from "./middleware";
 
 const bcrypt = require("bcrypt");
 const app = express();
 app.use(express.json());
 app.listen(3000, () => console.log("Port is open on 3000"));
 
-
+app.use(express.json())
 app.use(cors({
     origin: "http://localhost:5173", 
     methods: ["GET", "POST", "PUT", "DELETE"],
@@ -19,6 +19,7 @@ app.use(cors({
 }));
 
 const jwtSecret = process.env.JWT_SECRET || "SecretBrainCachedefaultJWT";
+
 
 
 
@@ -86,6 +87,43 @@ app.post("/api/v1/signin", async (req: Request, res: Response): Promise<void> =>
       res.status(500).json({ message: "Server error 😒" });
     }
   });
+
+
+ 
+
+interface AuthenticatedRequest extends Request {
+  user?: {
+    id: string;
+    iat?: number;
+    exp?: number;
+  };
+}
+
+  app.post("/api/v1/addcontent", ValidateUser, async (req: AuthenticatedRequest, res: Response):Promise<void>=> {
+  const { type, link, description } = req.body;
+
+    if (!type || !link || !description || !req.user) {
+    
+      res.status(400).json({ message: "All fields are required" });
+      return;
+    }
+
+    console.log("AddContenet Details-:", type, link, description, req.user.id);
+  try {
+    const content = await ContentModel.create({
+      content_type: type,
+      link,
+      description,
+      userId: req.user.id, 
+    });
+
+    res.status(201).json({ message: "Content added" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
   
 
 

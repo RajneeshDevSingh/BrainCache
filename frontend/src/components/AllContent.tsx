@@ -1,12 +1,14 @@
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import MainSection from "./MainSection";
+import { useState } from "react";
 
 
 const AllContent = () => {
+  const [CurrentboxState, setBoxState] = useState<boolean>(false);    
   return (
     <div><div className="text-xl fixed top-0 w-full">
-    <Navbar />
+    <Navbar toggleCreateBox={() => setBoxState(!CurrentboxState)}/>
   </div>
 
   <div className="flex flex-grow">
@@ -15,13 +17,17 @@ const AllContent = () => {
     </div>
 
     <div className="content-container">
-      <MainSection />
+      <MainSection boxState={CurrentboxState} updateBoxState={setBoxState}/>
     </div> 
+
   </div></div>
   )
 }
 
 export default AllContent
+
+   {/* <div className={`z-20  ${CurrentboxState == true ? 'block':'hidden'} `}></div>  */}
+
 
 
 

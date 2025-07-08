@@ -8,7 +8,7 @@ function RefrshHandler({ setIsAuthenticated }: { setIsAuthenticated: (isAuthenti
     useEffect(() => {
         if (localStorage.getItem('token')) {
             setIsAuthenticated(true);
-            if (location.pathname === '/auth' || location.pathname === '/') {
+            if (location.pathname === '/auth' ) {
                 navigate('/AllContent', { replace: false });
             }
         }

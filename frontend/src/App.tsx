@@ -31,10 +31,13 @@ const App = () => {
         <div className="relative text-white z-10 flex flex-col h-screen">
         <RefrshHandler setIsAuthenticated={setIsAuthenticated} />
           <Routes>
-          <Route path='/*' element={<PageNotFound/>} />
-            <Route path="/auth" element={<AuthPage />}/>
+          
+          <Route path="/" element={<Navigate to="/auth" replace />} />
+          <Route path="/auth" element={<AuthPage />} />
             <Route path="/AllContent" element={<PrivateRoute element={<AllContent/>}/>}/>
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
+          
         </div>
       </div>
     </Router>
