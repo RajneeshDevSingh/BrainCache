@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import {ContentModel, UserModel } from "./db";
 import { ValidateUser } from "./middleware";
+import mongoose from "mongoose";
 
 const bcrypt = require("bcrypt");
 const app = express();
@@ -124,6 +125,62 @@ interface AuthenticatedRequest extends Request {
   }
 });
 
-  
+
+interface CustomRequest extends Request{
+  user?:{
+    id:string,
+  }
+}
+app.get("/api/v1/getcontent", ValidateUser, async (req:CustomRequest, res:Response)=>
+{
+  try {
+      const userId = req.user?.id;
+      // const userId = "686c98c6a8dec9417579c430"
+      if(!userId)
+      {
+        res.status(400).json({message:"UserId doesn't exist or something wong"});
+        console.log("UserId doesn't exist or something wong")
+        return;
+      }
+
+    const userContent = await ContentModel.find({ userId: new mongoose.Types.ObjectId(userId) });
+
+      res.status(200).json({messsage:"User data fetched successfully", UserAllContent: userContent})
+      console.log("User data fetched successfully",userContent)
+      return;
+  } catch (error) {
+    console.log("Error while fetching UserContent", error)
+    res.status(403).json({message:"Error while fetching UserContent", error})
+    return
+  }
+
+})
+
+
+
+app.delete("/api/v1/deletecontent/:contentId", ValidateUser, async (req: CustomRequest, res: Response):Promise<void>=> {
+  try {
+    const userId = req.user?.id; // from ValidateUser middleware
+    const contentId = req.params.contentId;
+
+    console.log("UserId-: ", userId)
+    console.log("Contentid-: ", contentId)
+    // Optional: validate if contentId belongs to the user
+    const deleted = await ContentModel.findOneAndDelete({
+      _id: contentId
+    });
+
+    if (!deleted) {
+     res.status(404).json({ message: "Content not found or unauthorized" });
+     return
+    }
+
+    res.status(200).json({ message: "Content deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err });
+    return
+  }
+});
+
 
 

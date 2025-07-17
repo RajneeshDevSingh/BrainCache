@@ -8,18 +8,15 @@ if (!JWT_SECRET) {
 }
 
 export const ValidateUser = (req: Request, res: Response, next: NextFunction): void => {
-  console.log("Call reached to ValidateUser middleware");
 
   const authHeader = req.headers['authorization'];
   if (!authHeader) {
-    console.log("Header missing");
     res.status(403).json({ message: "Unauthorized, JWT token is required" });
     return;
   }
 
   const parts = authHeader.split(" ");
   if (parts.length !== 2 || parts[0] !== "Bearer") {
-    console.log("JWT token format is invalid");
     res.status(403).json({ message: "Unauthorized, JWT token format is invalid" });
     return;
   }
